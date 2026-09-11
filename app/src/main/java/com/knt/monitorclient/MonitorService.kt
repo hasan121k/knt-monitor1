@@ -47,14 +47,12 @@ class MonitorService : Service() {
         .writeTimeout(0, TimeUnit.MILLISECONDS)
         .build()
 
-    // camera
     private var camera: CameraDevice? = null
     private var camSession: CameraCaptureSession? = null
     private var camReader: ImageReader? = null
     private var lensFacing = CameraCharacteristics.LENS_FACING_BACK
     private var curMode = "camera"
 
-    // screen
     private var projection: MediaProjection? = null
     private var virtualDisplay: VirtualDisplay? = null
     private var scrReader: ImageReader? = null
@@ -110,10 +108,16 @@ class MonitorService : Service() {
                 )
             }
         }
-        val n = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, chId)
-        else @Suppress("DEPRECATION") Notification.Builder(this)
-        n.setContentTitle("KNT Monitor")
+        } else {
+            @Suppress("DEPRECATION")
+            Notification.Builder(this)
+        }
+
+        val n = builder
+            .setContentTitle("KNT Monitor")
             .setContentText("monitoring active")
             .setSmallIcon(android.R.drawable.presence_video_online)
             .build()
@@ -303,7 +307,6 @@ class MonitorService : Service() {
     private fun startScreen() {
         if (resultData == null || resultCode == 0) {
             Log.e(TAG, "no screen permission data")
-            // fallback to camera
             bgHandler?.post { openCamera(); notifyMode("camera") }
             return
         }
