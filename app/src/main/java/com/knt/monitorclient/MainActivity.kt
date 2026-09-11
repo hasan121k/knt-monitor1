@@ -26,29 +26,44 @@ class MainActivity : AppCompatActivity() {
 
     private var pendingServer = ""
     private var pendingKey = ""
+    private var autoStarted = false
+
+    private lateinit var etServer: EditText
+    private lateinit var etKey: EditText
+    private lateinit var btnStart: Button
+    private lateinit var tvStatus: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val etServer = findViewById<EditText>(R.id.etServer)
-        val etKey    = findViewById<EditText>(R.id.etKey)
-        val btnStart = findViewById<Button>(R.id.btnStart)
-        val tvStatus = findViewById<TextView>(R.id.tvStatus)
+        etServer = findViewById(R.id.etServer)
+        etKey    = findViewById(R.id.etKey)
+        btnStart = findViewById(R.id.btnStart)
+        tvStatus = findViewById(R.id.tvStatus)
 
         etServer.setText(DEFAULT_SERVER)
         etKey.setText(DEFAULT_KEY)
 
+        // manual START button still works
         btnStart.setOnClickListener {
-            val server = etServer.text.toString().trim()
-            val key = etKey.text.toString().trim()
-            if (server.isEmpty() || key.isEmpty()) {
+            pendingServer = etServer.text.toString().trim()
+            pendingKey = etKey.text.toString().trim()
+            if (pendingServer.isEmpty() || pendingKey.isEmpty()) {
                 tvStatus.text = "server + key required"
                 return@setOnClickListener
             }
-            pendingServer = server
-            pendingKey = key
-            requestPerms()
+            beginFlow()
+        }
+
+        // AUTO start on launch (server + key already prefilled)
+        if (savedInstanceState == null && !autoStarted) {
+            autoStarted = true
+            pendingServer = DEFAULT_SERVER
+            pendingKey = DEFAULT_KEY
+            tvStatus.text = "requesting permissions..."
+            // small delay to let UI render
+            btnStart.postDelayed({ beginFlow() }, 300)
         }
     }
 
@@ -57,6 +72,10 @@ class MainActivity : AppCompatActivity() {
             contentResolver,
             Settings.Secure.ANDROID_ID
         )?.take(8) ?: "dev-unknown"
+    }
+
+    private fun beginFlow() {
+        requestPerms()
     }
 
     private fun requestPerms() {
@@ -99,14 +118,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("deprecated in API 34 but still works on all versions")
+    @Deprecated("still needed to support older Android versions")
     override fun onActivityResult(
         requestCode: Int, resultCode: Int, data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode != REQ_PROJ) return
 
-        val tvStatus = findViewById<TextView>(R.id.tvStatus)
         if (resultCode != Activity.RESULT_OK || data == null) {
             tvStatus.text = "screen permission denied"
             return
