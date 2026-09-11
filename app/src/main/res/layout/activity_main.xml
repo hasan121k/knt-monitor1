@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#0A0F1A"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="KNT MONITOR"
+        android:textColor="#1EFFBC"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etServer"
+        android:hint="server url"
+        android:textColor="#E2FFF2"
+        android:textColorHint="#7AE0C4"
+        android:inputType="textUri"
+        android:background="#0C1824"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etKey"
+        android:hint="client key"
+        android:textColor="#E2FFF2"
+        android:textColorHint="#7AE0C4"
+        android:background="#0C1824"
+        android:padding="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnStart"
+        android:text="START MONITORING"
+        android:backgroundTint="#00CF9C"
+        android:textColor="#02100C"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:text="idle"
+        android:textColor="#7AE0C4"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:text="user must give camera + mic permission"
+        android:textColor="#FFBC8C"
+        android:textSize="11sp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
