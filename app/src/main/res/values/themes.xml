@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.KNTMonitor" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#00CF9C</item>
+        <item name="colorPrimaryVariant">#008064</item>
+        <item name="colorOnPrimary">#02100C</item>
+        <item name="android:statusBarColor">#0A0F1A</item>
+        <item name="android:windowBackground">#0A0F1A</item>
+    </style>
+</resources>
